@@ -35,7 +35,7 @@ Para garantir escalabilidade, testabilidade e manutenibilidade, o código é div
 
 ## Tecnologias
 
-- **React 18** com Vite 6 como bundler
+- **React 18** com Vite 7 como bundler
 - **TypeScript**
 - **Tailwind CSS**
 - **shadcn/ui** (Radix UI)
