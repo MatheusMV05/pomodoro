@@ -1,5 +1,4 @@
 import {usePomodoro} from "@/application/usePomodoro";
-import { Pomodoro } from "@/domain/entities/Pomodoro";
 import {Button} from "@/presentation/components/ui/button";
 
 export function Timer() {

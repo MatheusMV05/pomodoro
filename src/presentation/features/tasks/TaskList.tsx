@@ -40,7 +40,7 @@ export function TaskList({ repository } : Props) {
 
             <div className="flex-1 overflow-y-auto flex flex-col gap-3">
                 {tasks.length === 0 ? (
-                    <p className="text-muted-foreground text-center mt-4">Nenhuma tarefa na fila.</p>
+                    <p className="text-muted-foreground text-center mt-4">Nenhuma tarefa na fila</p>
                 ) : (
                     tasks.map((task, index) => (
                         <Card key={task.id} className={index === 0 ? "border-primary" : "opacity-50"}>
