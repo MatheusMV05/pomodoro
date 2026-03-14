@@ -1,8 +1,9 @@
 import {usePomodoro} from "@/application/usePomodoro";
+import { ArcProgress } from "@/presentation/components/ui/arc-progress";
 import {Button} from "@/presentation/components/ui/button";
 
 export function Timer() {
-    const {mode, timeLeft, isActive, completedCycles, start, pause, reset} = usePomodoro();
+    const {mode, timeLeft, duration, isActive, start, pause, reset} = usePomodoro();
 
     const minutes = Math.floor(timeLeft / 60);
     const seconds = timeLeft % 60;
@@ -15,8 +16,11 @@ export function Timer() {
                 {mode === 'focus' ? 'Foco' : 'Pausa'}
             </h2>
 
-            <div className="text-9xl font-bold font-mono mb-12 tabular-nums">
-                {formattedTime}
+            <div className="relative flex items-center justify-center mb-12">
+                <ArcProgress value={(timeLeft / duration) * 100} size={280} />
+                <span className="absolute text-6xl font-mono font-bold tabular-nums">
+                    {formattedTime}
+                </span>
             </div>
 
             <div className="flex gap-4">

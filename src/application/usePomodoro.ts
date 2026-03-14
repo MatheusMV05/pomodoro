@@ -18,6 +18,7 @@ export function usePomodoro() {
     return {
         mode:            pomodoro.mode,
         timeLeft:        pomodoro.timeLeft,
+        duration:        pomodoro.duration,
         isActive:        pomodoro.isActive,
         completedCycles: pomodoro.completedCycles,
         start:  () => setPomodoro((p: Pomodoro) => p.start()),
