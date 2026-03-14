@@ -1,69 +1,61 @@
-# React + TypeScript + Vite
+# Pomodoro & FIFO Task Manager
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Uma aplicação web de produtividade baseada na técnica Pomodoro, integrada a um gerenciador de tarefas com sistema de fila FIFO.
 
-Currently, two official plugins are available:
+Desenvolvido como projeto de aprimoramento técnico, com foco em Clean Architecture no ecossistema React.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Arquitetura e Decisões de Design
 
-## Expanding the ESLint configuration
+Para garantir escalabilidade, testabilidade e manutenibilidade, o código é dividido em quatro camadas principais:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **`domain/`**: Contém as entidades e regras de negócio da aplicação (`Task`, `Pomodoro`). Livre de qualquer dependência visual ou do React.
+- **`application/`**: Camada responsável pela orquestração dos casos de uso. Custom Hooks (`usePomodoro`, `useTasks`) isolam a lógica de negócio, gerenciamento de estado e ciclos de vida.
+- **`infrastructure/`**: Implementações concretas dos contratos definidos pelo domínio. Contém os adaptadores de persistência e qualquer mecanismo que dependa de tecnologia específica. É a única camada que conhece detalhes como LocalStorage ou APIs externas.
+- **`presentation/`**: Camada visual. Componentes que refletem o estado da camada de aplicação e capturam interações do usuário. Dividida entre `components/` (elementos genéricos de UI) e `features/` (blocos por funcionalidade).
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Funcionalidades
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Motor do Pomodoro
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- **Ciclos automáticos:** Transição autônoma entre Foco (25 min) e Pausa Curta (5 min).
+- **Pausa longa:** Após 4 ciclos completos de foco, a aplicação avança automaticamente para uma Pausa Longa (15 min).
+- **Controle de estado:** Permite iniciar, pausar e resetar o timer a qualquer momento.
+
+### Fila de Tarefas (FIFO)
+
+- **First-In, First-Out:** Novas tarefas entram no final da fila.
+- **Foco direcionado:** A primeira tarefa da fila é automaticamente destacada como tarefa em foco.
+- **Persistência:** O estado da fila é preservado entre reloads via LocalStorage.
+
+### Interface
+
+- Integração com **shadcn/ui** e **Tailwind CSS**.
+- Suporte a Dark Mode via variáveis CSS semânticas.
+- Micro-interações de hover e feedback visual nos controles.
+
+## Tecnologias
+
+- **React 18** com Vite 6 como bundler
+- **TypeScript**
+- **Tailwind CSS**
+- **shadcn/ui** (Radix UI)
+- **npm**
+
+## Como Executar
+
+Certifique-se de ter o [Node.js](https://nodejs.org/) instalado.
+
+1. Clone o repositório:
+```bash
+git clone https://github.com/JuliaTBarros/pomodoro
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Instale as dependências:
+```bash
+npm install
+```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+3. Inicie o servidor de desenvolvimento:
+```bash
+npm run dev
 ```
