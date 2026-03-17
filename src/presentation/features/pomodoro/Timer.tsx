@@ -2,9 +2,11 @@ import { useEffect, useRef, type ReactNode } from "react";
 import { usePomodoro } from "@/application/usePomodoro";
 import { Button } from "@/presentation/components/ui/button";
 import { ArcProgress } from "@/presentation/components/ui/arc-progress";
+import { NowPlayingWidget } from "@/presentation/features/spotify/NowPlayingWidget";
 import { useNotification } from "@/presentation/features/notification/notification";
 import { cn } from "@/lib/utils";
 import type { TimerSettings } from "@/application/useSettings";
+import type { NowPlayingTrack } from "@/application/useNowPlaying";
 
 const TRANSITION_MESSAGES = {
     shortBreak: { title: "Hora da pausa curta!", body: "Bom trabalho! Descanse um pouco." },
@@ -23,6 +25,10 @@ const CYCLES_UNTIL_LONG = 4;
 interface Props {
     settings: TimerSettings;
     onFocusComplete: (durationSeconds: number) => void;
+    nowPlaying?: NowPlayingTrack | null;
+    onToggle?: () => Promise<void>;
+    onNext?:   () => Promise<void>;
+    onPrev?:   () => Promise<void>;
 }
 
 type PomodoroMode = 'focus' | 'shortBreak' | 'longBreak';
@@ -45,7 +51,7 @@ function TomatoTimer({ progress, isActive, mode, children }: TomatoTimerProps) {
     );
 }
 
-export function Timer({ settings, onFocusComplete }: Props) {
+export function Timer({ settings, onFocusComplete, nowPlaying, onToggle, onNext, onPrev }: Props) {
     const { mode, timeLeft, duration, isActive, completedCycles, start, pause, reset } = usePomodoro(settings, onFocusComplete);
     const { notify } = useNotification();
     const prevModeRef = useRef(mode);
@@ -139,6 +145,18 @@ export function Timer({ settings, onFocusComplete }: Props) {
                     Resetar
                 </Button>
             </div>
+
+            {/* Now playing */}
+            {nowPlaying && onToggle && (
+                <div className="w-full max-w-xs animate-fade-in-up">
+                    <NowPlayingWidget
+                        track={nowPlaying}
+                        onToggle={onToggle}
+                        onNext={onNext ?? (() => Promise.resolve())}
+                        onPrev={onPrev ?? (() => Promise.resolve())}
+                    />
+                </div>
+            )}
         </div>
     );
 }

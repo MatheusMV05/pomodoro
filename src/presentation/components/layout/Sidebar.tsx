@@ -1,7 +1,7 @@
-import { Timer as TimerIcon, BarChart2, Settings } from "lucide-react";
+import { Timer as TimerIcon, BarChart2, Settings, Music2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export type AppTab = 'pomodoro' | 'history' | 'settings';
+export type AppTab = 'pomodoro' | 'history' | 'settings' | 'spotify';
 
 interface NavItem {
     id: AppTab;
@@ -13,6 +13,7 @@ const NAV_ITEMS: NavItem[] = [
     { id: 'pomodoro', label: 'Pomodoro',      icon: <TimerIcon size={20} /> },
     { id: 'history',  label: 'Histórico',     icon: <BarChart2 size={20} /> },
     { id: 'settings', label: 'Configurações', icon: <Settings  size={20} /> },
+    { id: 'spotify',  label: 'Spotify',       icon: <Music2    size={20} /> },
 ];
 
 interface Props {

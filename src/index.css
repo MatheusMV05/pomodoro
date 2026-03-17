@@ -171,3 +171,8 @@
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes equalizer {
+  from { transform: scaleY(0.3); }
+  to   { transform: scaleY(1); }
+}
